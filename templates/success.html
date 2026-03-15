@@ -1,0 +1,136 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Order Confirmed – Subbu's Kitchen</title>
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/style.css') }}" />
+  <style>
+    .confetti-wrap { position: fixed; top: 0; left: 0; width: 100%; pointer-events: none; z-index: 200; }
+    @keyframes fall {
+      0%   { transform: translateY(-20px) rotate(0deg); opacity: 1; }
+      100% { transform: translateY(100vh) rotate(720deg); opacity: 0; }
+    }
+    .confetti-dot {
+      position: absolute;
+      width: 8px; height: 8px;
+      border-radius: 2px;
+      animation: fall linear forwards;
+    }
+  </style>
+</head>
+<body>
+
+<div class="confetti-wrap" id="confetti"></div>
+
+<header class="site-header">
+  <div class="header-inner">
+    <a href="/" class="logo">
+      <img src="{{ url_for('static', filename='images/south_indian/logo.jpeg') }}" alt="Subbu's Kitchen Logo" class="logo-img" />
+      <span class="logo-text">
+        <span class="logo-name">Subbu's Kitchen</span>
+        <span class="logo-tagline">Pure Veg · RR Nagar, Bangalore</span>
+      </span>
+    </a>
+    <nav><a href="/">Menu</a></nav>
+  </div>
+</header>
+
+<div class="success-page">
+  <div class="success-icon">✅</div>
+  <h1>Order Confirmed!</h1>
+  <p>Thank you, <strong>{{ order.customer_name }}</strong>! Your food is being freshly prepared.</p>
+  <p style="font-size:0.85rem;color:#aaa">Order #{{ order.id }}</p>
+
+  {% if order.quantity >= 2 and order.menu_item in ["Subbu's Normal Meals", "Subbu's Meals"] %}
+  <div style="background:rgba(45,106,45,0.1);border:2px solid var(--banana-leaf);border-radius:10px;padding:0.75rem 1.25rem;margin:1rem 0;font-weight:700;color:var(--banana-leaf)">
+    🎁 You've earned a FREE sweet with your order!
+  </div>
+  {% endif %}
+
+  <div class="order-summary-card">
+    <div class="summary-row">
+      <span class="summary-label">Dish</span>
+      <span class="summary-value">{{ order.menu_item }}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Quantity</span>
+      <span class="summary-value">{{ order.quantity }} serving(s)</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Spice Level</span>
+      <span class="summary-value">{{ order.spice_level | title }}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Date</span>
+      <span class="summary-value">{{ order.order_date }}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Time</span>
+      <span class="summary-value">{{ order.order_time }}</span>
+    </div>
+    <div class="summary-row">
+      <span class="summary-label">Type</span>
+      <span class="summary-value">{{ order.delivery_type | title }}</span>
+    </div>
+    {% if order.address %}
+    <div class="summary-row">
+      <span class="summary-label">Address</span>
+      <span class="summary-value" style="max-width:300px;text-align:right;font-size:0.82rem">
+        {{ order.address[:80] }}{% if order.address|length > 80 %}…{% endif %}
+      </span>
+    </div>
+    {% endif %}
+    {% if order.latitude and order.longitude %}
+    <div class="summary-row">
+      <span class="summary-label">GPS</span>
+      <span class="summary-value">{{ "%.4f"|format(order.latitude) }}, {{ "%.4f"|format(order.longitude) }}</span>
+    </div>
+    {% endif %}
+    <div class="summary-row">
+      <span class="summary-label">Phone</span>
+      <span class="summary-value">{{ order.phone }}</span>
+    </div>
+    {% if order.special_instructions %}
+    <div class="summary-row">
+      <span class="summary-label">Instructions</span>
+      <span class="summary-value" style="font-size:0.82rem">{{ order.special_instructions }}</span>
+    </div>
+    {% endif %}
+    <div class="summary-row">
+      <span class="summary-label">Status</span>
+      <span class="summary-value" style="color:var(--banana-leaf)">🟢 Pending Preparation</span>
+    </div>
+  </div>
+
+  <p style="font-size:0.85rem;color:#888;margin-bottom:0.5rem">
+    📞 We'll call you at <strong>{{ order.phone }}</strong> to confirm.
+  </p>
+  <p style="font-size:0.82rem;color:#aaa">* Delivery charges will be communicated separately</p>
+
+  <a href="/" class="btn-order" style="display:inline-block;margin-top:1.5rem;padding:0.8rem 2rem;font-size:0.95rem">
+    ← Back to Menu
+  </a>
+</div>
+
+<footer>
+  <p>Made with ❤️ by <strong>Subbu's Kitchen</strong> · Pure Veg · RR Nagar · 📞 8123987160</p>
+</footer>
+
+<script>
+  const colors = ['#FF6B00','#E8A000','#2D6A2D','#FF9A3C','#FDF6E3','#5C3317'];
+  const wrap = document.getElementById('confetti');
+  for (let i = 0; i < 60; i++) {
+    const dot = document.createElement('div');
+    dot.className = 'confetti-dot';
+    dot.style.left = Math.random() * 100 + 'vw';
+    dot.style.background = colors[Math.floor(Math.random() * colors.length)];
+    dot.style.animationDuration = (1.5 + Math.random() * 2) + 's';
+    dot.style.animationDelay = (Math.random() * 0.8) + 's';
+    dot.style.width = dot.style.height = (6 + Math.random() * 8) + 'px';
+    wrap.appendChild(dot);
+    dot.addEventListener('animationend', () => dot.remove());
+  }
+</script>
+</body>
+</html>
