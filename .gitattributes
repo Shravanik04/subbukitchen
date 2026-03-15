@@ -1,2 +1,41 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# ─── Line endings ───────────────────────────────────────────────
+# Normalise all text files to LF on checkout (safe on Windows too)
+* text=auto eol=lf
+
+# Python source files
+*.py      text eol=lf
+*.txt     text eol=lf
+*.md      text eol=lf
+*.sql     text eol=lf
+
+# Web files
+*.html    text eol=lf
+*.css     text eol=lf
+*.js      text eol=lf
+*.json    text eol=lf
+
+# Config / deployment files
+Procfile  text eol=lf
+.env      text eol=lf
+
+# ─── Binary files (no line-ending conversion) ────────────────────
+*.jpeg    binary
+*.jpg     binary
+*.png     binary
+*.gif     binary
+*.ico     binary
+*.svg     binary
+*.woff    binary
+*.woff2   binary
+*.ttf     binary
+*.eot     binary
+*.db      binary
+
+# ─── Git diff helpers ────────────────────────────────────────────
+*.py   diff=python
+*.md   diff=markdown
+
+# ─── Export ignore (files excluded from git archive / zip) ───────
+.gitattributes   export-ignore
+.gitignore       export-ignore
+README.md        export-ignore
