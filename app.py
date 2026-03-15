@@ -47,7 +47,7 @@ def order():
 def place_order():
     data = request.get_json()
     
-    VALID_ITEMS = ["Subbu's Chapati Box", "Subbu's Normal Meals", "Subbu's Meals"]
+    VALID_ITEMS = ["Subbu's Chapati Box", "Subbu's Normal Meals", "Subbu's Meals", "Puliyogare"]
     if data.get('menu_item') not in VALID_ITEMS:
         return jsonify({'success': False, 'message': 'Invalid menu item selected'})
 
