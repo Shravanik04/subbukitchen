@@ -3,9 +3,7 @@ import sqlite3
 import os
 from datetime import datetime, timedelta
 
-import os as _os
-_sk = _os.path.join(_os.path.dirname(__file__), 'sk')
-app = Flask(__name__, template_folder=_os.path.join(_sk, 'templates'), static_folder=_os.path.join(_sk, 'static'))
+app = Flask(__name__)
 
 DB_PATH = os.path.join(os.path.dirname(__file__), 'database.db')
 
